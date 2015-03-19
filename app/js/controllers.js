@@ -29,7 +29,7 @@ networkVisApp.factory("ipUtils", function() {
 });
 
 
-var makeSVG = function(a, element) {
+var makeHive = function(a, element) {
   element.empty();
   var degrees = function(rads) { return rads / Math.PI * 180 - 90;};
 
@@ -89,12 +89,13 @@ var makeSVG = function(a, element) {
 networkVisApp.directive('rlHivePlot', [function() {
   var link = function(scope, element, attrs) {
     scope.$watch(attrs.svgArgs,
-                 function() { if (scope.svgArgs) {return makeSVG(scope.svgArgs, element);}});
+                 function() { if (scope.svgArgs) {return makeHive(scope.svgArgs, element);}});
   };
-  return {link: link,
-          scope: {
-            svgArgs: "="
-          }
+  return {
+            link: link,
+            scope: {
+              svgArgs: "="
+            }
           };
 }]);
 
