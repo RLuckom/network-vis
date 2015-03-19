@@ -33,3 +33,60 @@ data.
 
 This project explores different ways of visualizing network data to address the
 requirements listed above.
+
+SVG Hive Plot notes
+===================
+
+We have three types of things we want to draw:
+
+1. axis lines
+2. node circles
+3. connection paths
+
+These have the following data dependencies:
+
+1. axis lines
+a) The angle of the line based on the specific axis
+b) the length of the line based on the domain of the axis
+
+2. node circles
+a) the angle along which to draw the point
+b) the radius from the center at which to draw it
+
+3. connection paths 
+a) the angle and radius of the source node
+b) the angle and radius of the destination node
+
+The first two of these can be represented by exceptionally simple
+objects, especially once we notice that the dependencies for them are
+essentially the same:
+
+1. [{ angle: a, radius: r}...]
+2. [{ angle: a, radius: r}...]
+
+The connection paths are not so straightforward, because they are
+processed in the d3.hive.link function which draws splines from point to
+point. But in the simplest case it turns out that what we need is just 
+two of the objects representing nodes:
+
+3. [{source: { angle: a, radius: r}, 
+target: { angle: a, radius: r}}...]
+
+It turns out that all we needed, for all of this, were a bunch of 
+polar coordinates!
+
+These objects can also contain arbitrary other elements, for instance 
+anything required to print a sensible description string about them or 
+color them. For now, let's say that each will also provide a toString
+method that will describe it.
+
+Now we can start to imagine that we could encapsulate all of this in a
+directive. It would have three arguments and could take cues on size
+and scales from the existing DOM and the data to be plotted. It could
+communicate based on scope or callbacks. For instance, instead of
+providing actual angles in the angle property, we'll provide an ID of
+the axis. The directive will count and assign angles to the axes
+internally, then assign the actual angles where they're needed.
+
+First, let's see what we can do do get the data into that shape.
+
