@@ -1,6 +1,10 @@
-<div class="col-md-3" id="filter-and-focus">
+<div class="col-md-3">
   <div>{{description}}</div>
+  <div id="control-panel">
+    <p>Source IP: <input ng-model="sourceIp"></p>
+    <p>Dest IP: <input ng-model="destIp"></p>
+  </div>
 </div>
 <div class="col-md-9">
-  <rl-hive-plot></rl-hive-plot>
+  <rl-hive-plot svg-args="svgArgs"></rl-hive-plot>
 </div>

@@ -30,9 +30,10 @@ networkVisApp.factory("ipUtils", function() {
 
 
 var makeSVG = function(a, element) {
+  element.empty();
   var degrees = function(rads) { return rads / Math.PI * 180 - 90;};
 
-  var svg = d3.select(element).append('svg')
+  var svg = d3.select(element[0]).append('svg')
   .append('g')
   .attr('transform', "translate(" + a.center.x + "," + a.center.y + ")");
 
@@ -87,10 +88,14 @@ var makeSVG = function(a, element) {
 
 networkVisApp.directive('rlHivePlot', [function() {
   var link = function(scope, element, attrs) {
-    scope.$watch(function() { return scope.svgArgs;},
-                 function() { if (scope.svgArgs) {return makeSVG(scope.svgArgs, element[0]);}});
+    scope.$watch(attrs.svgArgs,
+                 function() { if (scope.svgArgs) {return makeSVG(scope.svgArgs, element);}});
   };
-  return {link: link};
+  return {link: link,
+          scope: {
+            svgArgs: "="
+          }
+          };
 }]);
 
 networkVisApp.controller('aboutController', ["$scope", function($scope) {
@@ -98,7 +103,7 @@ networkVisApp.controller('aboutController', ["$scope", function($scope) {
 
 networkVisApp.controller('chordController', ['$scope', '$http', 'ipUtils', 
   function($scope, $http, ipUtils) {
-    $http.get('../netflows.json').success(function(data) {
+    var redrawHive = function(data) {
       var innerRadius = 100,
       outerRadius = 900,
       majorAngle = 2 * Math.PI / 3,
@@ -214,5 +219,30 @@ networkVisApp.controller('chordController', ['$scope', '$http', 'ipUtils',
                 };
                  
 
+    };
+
+
+    $http.get('../netflows.json').success(function(data) {
+      $scope.hiveData = data;
+      $scope.filteredData = data;
+      $scope.$watch(function() {return $scope.filteredData;},
+                    function() {return redrawHive($scope.filteredData);});
+      var filterHiveData = function() {
+        var hd = $scope.hiveData;
+        if ($scope.sourceIp) {
+           hd = hd.filter(function(d) {
+             return d.source.indexOf($scope.sourceIp) !== -1;
+           });
+         }
+        if ($scope.destIp) {
+           hd = hd.filter(function(d) {
+             return d.dest.indexOf($scope.destIp) !== -1;
+           });
+         }
+         $scope.filteredData = hd;
+       };
+
+      $scope.$watch(function() {return $scope.sourceIp;}, filterHiveData);
+      $scope.$watch(function() {return $scope.destIp;}, filterHiveData);
     });
   }]);
