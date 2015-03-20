@@ -1,0 +1,41 @@
+<div class="col-md-3 panel panel-default">
+  <div class="panel-heading">What Happens on an Interface?</div>
+  <div>
+    <p>What you're looking at is a <a href="http://bost.ocks.org/mike/hive/">hive plot</a>
+    showing up to 329 <a href="http://en.wikipedia.org/wiki/NetFlow">NetFlow</a> records 
+    I collected on my WLAN0 interface while I was browsing the internet. </p>
+    <p>The axis at left is a log scale of the ports the requests originated from. 
+    At the very bottom, you can see a few requests that started at port 0, then a cluster
+    at port 53, another at port 80, and one at port 443. The central axis holds
+    the nodes representing the individual flows themselves spaced proportionally by time; 
+    if you hover over them you can see full details in the 'Currently Selected' box. 
+    The axis at the right shows the destination ports of the flows.</p>
+    <p>At this point you might wonder why data is originating on ports 53, 80, and 443. In fact,
+    those clusters represent <strong>incoming</strong> flows which originated on those ports
+    on servers on the web in response to requests from my computer. To see only requests coming
+    <strong>from</strong> my computer, enter 192.168.1.2 in the 'Source IP' filter box.
+    Now you should see only flows that went from my computer out to the internet. To see 
+    what came the other way, delete my IP from the source box and put it in the destination
+    box. Each of those boxes accepts partial IPs and regular expressions, so you can filter
+    based on subnets as well as full addresses.</p>
+    <p> 
+  </div>
+</div>
+<div class="col-md-7">
+  <rl-hive-plot svg-args="svgArgs"></rl-hive-plot>
+</div>
+<div class="col-md-2 panel panel-default">
+  <div class="panel panel-default">
+    <div class="panel-heading">Currently Selected</div>
+    <ul class="list-group">
+      <li class="list-group-item preserve-linebreaks" ng-bind="description"></li>
+    </ul>
+  </div>
+  <div class="panel panel-default" id="control-panel">
+    <div class="panel-heading">Filter By</div>
+    <ul class="list-group">
+      <li class="list-group-item">Source IP: <input ng-model="sourceIp"></li>
+      <li class="list-group-item">Destination IP: <input ng-model="destIp"></li>
+    </ul>
+  </div>
+</div>

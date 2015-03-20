@@ -1,0 +1,45 @@
+.site-header {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.site-content {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+svg {
+  width: 960px;
+  height: 960px;
+}
+
+.axis {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.preserve-linebreaks {
+  white-space: pre-wrap;
+}
+
+.node circle {
+  stroke: #000;
+}
+
+.link {
+  fill: none;
+  stroke: #333;
+  stroke-width: 1.5px;
+  stroke-opacity: .3;
+}
+
+.link.active {
+  stroke: red;
+  stroke-width: 2px;
+  stroke-opacity: 1;
+}
+
+.node circle.active {
+  stroke: red;
+  stroke-width: 3px;
+}
