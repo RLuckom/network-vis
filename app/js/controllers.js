@@ -1,7 +1,3 @@
-networkVisApp.controller('aboutController', ["$scope", function($scope) {
-  return $scope;}
-]); 
-
 networkVisApp.controller('chordController', ['$scope', '$http', 'ipUtils', 
   function($scope, $http, ipUtils) { 
 

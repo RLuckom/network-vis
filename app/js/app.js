@@ -4,10 +4,6 @@ var networkVisApp = angular.module('networkVisApp', [
 
 networkVisApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-  when('/about', {
-    templateUrl: 'partials/about.html',
-    controller: 'aboutController'
-  }).
   when('/vis', {
     templateUrl: 'partials/flowvis.html',
     controller: 'chordController'
